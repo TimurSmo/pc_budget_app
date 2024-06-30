@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Parts Suggestion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1, h2 {
+            color: #0056b3;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+        input[type="number"], button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #004494;
+        }
+        .message, .error {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            width: calc(100% - 20px);
+        }
+        .message {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function toggleDeepControl() {
+            var deepControlDiv = document.getElementById('deep-control');
+            deepControlDiv.classList.toggle('hidden');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>PC Parts Suggestion</h1>
+        <form method="POST">
+            <label for="budget">Enter your budget (₾):</label>
+            <input type="number" id="budget" name="budget" step="0.01" required>
+
+            <button type="button" onclick="toggleDeepControl()">Deep Control</button>
+
+            <div id="deep-control" class="hidden">
+                <h2>Allocate your budget (%):</h2>
+                <label for="cpu_allocation">CPU:</label>
+                <input type="number" id="cpu_allocation" name="cpu_allocation" min="0" max="100" value="20" required>
+
+                <label for="motherboard_allocation">Motherboard:</label>
+                <input type="number" id="motherboard_allocation" name="motherboard_allocation" min="0" max="100" value="15" required>
+
+                <label for="gpu_allocation">GPU:</label>
+                <input type="number" id="gpu_allocation" name="gpu_allocation" min="0" max="100" value="40" required>
+
+                <label for="ram_allocation">RAM:</label>
+                <input type="number" id="ram_allocation" name="ram_allocation" min="0" max="100" value="10" required>
+
+                <label for="storage_allocation">Storage:</label>
+                <input type="number" id="storage_allocation" name="storage_allocation" min="0" max="100" value="5" required>
+
+                <label for="psu_allocation">Power Supply:</label>
+                <input type="number" id="psu_allocation" name="psu_allocation" min="0" max="100" value="5" required>
+
+                <label for="case_allocation">Case:</label>
+                <input type="number" id="case_allocation" name="case_allocation" min="0" max="100" value="5" required>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if message %}
+        <p class="message">{{ message }}</p>
+        {% endif %}
+
+        {% if selected_parts %}
+        <h2>Selected PC Parts:</h2>
+        <ul>
+            {% for part_type, part in selected_parts.items() %}
+            <li>{{ part_type }}: <a href="{{ part['url'] }}">{{ part['name'] }}</a> - ₾{{ part['price'] }}</li>
+            {% endfor %}
+        </ul>
+        <p>Total Cost: ₾{{ cost }}</p>
+        <p>Budget: ₾{{ budget }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
